@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Business Manager</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f4;
+            color: #333;
+        }
+
+        nav {
+            background: #1a1a2e;
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: auto;
+        }
+
+        nav button {
+            background: transparent;
+            color: #aaa;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 6px;
+        }
+
+        nav button:hover, nav button.active {
+            background: #16213e;
+            color: white;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .page { display: none; flex-direction: column; gap: 1.5rem; }
+        .page.active { display: flex; }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            font-size: 16px;
+            margin-bottom: 1rem;
+            color: #1a1a2e;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        input, select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        button {
+            padding: 8px 20px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button:hover { background: #16213e; }
+
+        .btn-red {
+            background: #e74c3c;
+            padding: 4px 12px;
+            font-size: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 1rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid #f0f2f5;
+            color: #888;
+            font-size: 12px;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        tr:hover td { background: #f9f9f9; }
+
+        .result-box {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .result-row:last-child { border-bottom: none; }
+
+        .result-row.total {
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 6px;
+        }
+
+        .profit-good { color: green; }
+        .profit-bad  { color: red; }
+
+        .status-msg {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 0.5rem;
+}
+
+.stat-box {
+    background: #f0f2f5;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.stat-box p {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.stat-box h3 {
+    font-size: 18px;
+    color: #e74c3c;
+}
+
+        .status-good { background: #e8f5e9; color: green; }
+        .status-bad  { background: #fdecea; color: red; }
+
+        .hidden { display: none; }
+        .success-msg { color: green; font-size: 13px; margin-top: 8px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <span class="logo">BusinessPro</span>
+    <button onclick="showPage('customers')" class="active" id="btn-customers">Customers</button>
+    <button onclick="showPage('profit')"    id="btn-profit">Profit Calc</button>
+    <button onclick="showPage('invoices')"  id="btn-invoices">Invoices</button>
+    <button onclick="showPage('quotes')"    id="btn-quotes">Quotes</button>
+    <button onclick="showPage('expenses')" id="btn-expenses">Expenses</button>
+    <button onclick="showPage('employees')" id="btn-employees">Employees</button>
+</nav>
+
+<div class="container">
+
+    <!-- ── CUSTOMERS PAGE ─────────────────────────── -->
+    <div id="customers" class="page active">
+        <div class="card">
+            <h2>Add New Customer</h2>
+            <div class="form-row">
+                <input type="text" id="c_name"    placeholder="Full name">
+                <input type="text" id="c_phone"   placeholder="Phone">
+            </div>
+            <div class="form-row">
+                <input type="text" id="c_email"   placeholder="Email">
+                <input type="text" id="c_address" placeholder="Address">
+            </div>
+            <button onclick="addCustomer()">Add Customer</button>
+            <p class="success-msg hidden" id="c_success">Customer added!</p>
+        </div>
+
+        <div class="card">
+            <h2>All Customers</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="customerTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ── PROFIT CALC PAGE ───────────────────────── -->
+    <div id="profit" class="page">
+        <div class="card">
+            <h2>Profit Calculator</h2>
+            <div class="form-row">
+                <input type="number" id="p_charged" placeholder="Amount charged ($)">
+                <input type="number" id="p_supply"  placeholder="Supply cost ($)">
+            </div>
+            <div class="form-row">
+                <input type="number" id="p_hours"   placeholder="Labor hours">
+                <input type="number" id="p_rate"    placeholder="Labor rate ($/hr)">
+            </div>
+            <button onclick="calcProfit()">Calculate</button>
+
+            <div class="result-box" id="profitResult">
+                <div class="result-row">
+                    <span>Amount Charged</span>
+                    <span id="r_charged"></span>
+                </div>
+                <div class="result-row">
+                    <span>Supply Cost</span>
+                    <span id="r_supply"></span>
+                </div>
+                <div class="result-row">
+                    <span>Labor Cost</span>
+                    <span id="r_labor"></span>
+                </div>
+                <div class="result-row total">
+                    <span>Net Profit</span>
+                    <span id="r_profit"></span>
+                </div>
+            </div>
+            <div class="status-msg" id="profitStatus"></div>
+        </div>
+    </div>
+
+    <!-- ── INVOICE PAGE ───────────────────────── -->
+   <div id="invoices" class="page">
+    <div class="card">
+        <h2>Create Invoice</h2>
+        <div class="form-row">
+            <input type="number" id="i_customerId" placeholder="Customer ID">
+            <input type="text"   id="i_customerName" placeholder="Customer Name">
+        </div>
+        <div class="form-row">
+            <input type="date"   id="i_date">
+            <input type="number" id="i_amount" placeholder="Amount ($)">
+        </div>
+        <button onclick="addInvoice()">Create Invoice</button>
+        <p class="success-msg hidden" id="i_success">Invoice created!</p>
+    </div>
+
+    <div class="card">
+        <h2>All Invoices</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="invoiceTable"></tbody>
+        </table>
+    </div>
+</div>
+
+    <!-- ── QUOTES PAGE ────────────────────────────── -->
+    <div id="quotes" class="page">
+        <div class="card">
+            <h2>Generate Quote</h2>
+            <div class="form-row">
+                <input type="text"   id="q_customer" placeholder="Customer name">
+                <input type="text"   id="q_phone"    placeholder="Phone">
+            </div>
+            <div class="form-row">
+                <input type="text"   id="q_service"  placeholder="Service type">
+                <input type="text"   id="q_vehicle"  placeholder="Vehicle">
+            </div>
+            <div class="form-row">
+                <input type="number" id="q_supply"   placeholder="Supply cost ($)">
+                <input type="number" id="q_hours"    placeholder="Labor hours">
+                <input type="number" id="q_rate"     placeholder="Labor rate ($/hr)">
+                <input type="number" id="q_price"    placeholder="Quote price ($)">
+            </div>
+            <div class="form-row">
+                <input type="date"   id="q_date">
+                <input type="text"   id="q_notes"    placeholder="Notes (optional)">
+            </div>
+            <button onclick="generateQuote()">Generate Quote</button>
+
+            <div class="result-box" id="quotePreview">
+                <div class="result-row">
+                    <span>Customer</span><span id="qr_customer"></span>
+                </div>
+                <div class="result-row">
+                    <span>Service</span><span id="qr_service"></span>
+                </div>
+                <div class="result-row">
+                    <span>Vehicle</span><span id="qr_vehicle"></span>
+                </div>
+                <div class="result-row">
+                    <span>Supply Cost</span><span id="qr_supply"></span>
+                </div>
+                <div class="result-row">
+                    <span>Labor Cost</span><span id="qr_labor"></span>
+                </div>
+                <div class="result-row total">
+                    <span>Quote Price</span><span id="qr_price"></span>
+                </div>
+                <div class="result-row total">
+                    <span>Est. Profit</span><span id="qr_profit"></span>
+                </div>
+                <br>
+                <button onclick="saveQuote()">Save Quote</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Saved Quotes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Customer</th>
+                        <th>Service</th>
+                        <th>Vehicle</th>
+                        <th>Price</th>
+                        <th>Est. Profit</th>
+                    </tr>
+                </thead>
+                <tbody id="quotesTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ── EXPENSES PAGE ──────────────────────────── -->
+<div id="expenses" class="page">
+
+    <!-- Add Expense Form -->
+    <div class="card">
+        <h2>Add Expense</h2>
+        <div class="form-row">
+            <input type="number" id="e_amount"      placeholder="Amount ($)">
+            <select id="e_category">
+                <option value="">Select category...</option>
+                <option value="Supplies">Supplies</option>
+                <option value="Labor">Labor</option>
+                <option value="Gas">Gas</option>
+                <option value="Equipment">Equipment</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <input type="date" id="e_date">
+            <input type="text" id="e_desc" placeholder="Description">
+        </div>
+        <button onclick="addExpense()">Add Expense</button>
+        <p class="success-msg hidden" id="e_success">Expense added!</p>
+    </div>
+
+    <!-- Category Totals -->
+    <div class="card">
+        <h2>Totals by Category</h2>
+        <div class="stat-grid" id="categoryTotals">
+            <div class="stat-box">
+                <p>Supplies</p>
+                <h3 id="total_Supplies">$0.00</h3>
+            </div>
+            <div class="stat-box">
+                <p>Labor</p>
+                <h3 id="total_Labor">$0.00</h3>
+            </div>
+            <div class="stat-box">
+                <p>Gas</p>
+                <h3 id="total_Gas">$0.00</h3>
+            </div>
+            <div class="stat-box">
+                <p>Equipment</p>
+                <h3 id="total_Equipment">$0.00</h3>
+            </div>
+            <div class="stat-box">
+                <p>Other</p>
+                <h3 id="total_Other">$0.00</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Expenses Table -->
+    <div class="card">
+        <h2>All Expenses</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="expenseTable"></tbody>
+        </table>
+        <div style="margin-top:1rem; font-weight:bold; font-size:15px;">
+            Total: <span id="expenseTotal" style="color:#e74c3c">$0.00</span>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── EMPLOYEES PAGE ─────────────────────────── -->
+<div id="employees" class="page">
+
+    <!-- Add Employee Form -->
+    <div class="card">
+        <h2>Add Employee</h2>
+        <div class="form-row">
+            <input type="text"   id="emp_name"    placeholder="Full name">
+            <input type="text"   id="emp_jobType" placeholder="Job type (e.g. Detailer)">
+        </div>
+        <div class="form-row">
+            <input type="number" id="emp_rate"    placeholder="Hourly rate ($)">
+            <input type="text"   id="emp_phone"   placeholder="Phone">
+            <input type="text"   id="emp_email"   placeholder="Email">
+        </div>
+        <button onclick="addEmployee()">Add Employee</button>
+        <p class="success-msg hidden" id="emp_success">Employee added!</p>
+    </div>
+
+    <!-- Add Hours Form -->
+    <div class="card">
+        <h2>Log Hours</h2>
+        <div class="form-row">
+            <input type="number" id="emp_id"    placeholder="Employee ID">
+            <input type="number" id="emp_hours" placeholder="Hours to add">
+        </div>
+        <button onclick="addHours()">Log Hours</button>
+        <p id="emp_payResult" style="margin-top:10px; font-weight:bold;"></p>
+    </div>
+
+    <!-- Search Employee -->
+    <div class="card">
+        <h2>Search Employee</h2>
+        <div class="form-row">
+            <input type="text" id="emp_search" placeholder="Search by name">
+            <button onclick="searchEmployee()">Search</button>
+        </div>
+        <div id="emp_searchResult"></div>
+    </div>
+
+    <!-- All Employees Table -->
+    <div class="card">
+        <h2>All Employees</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Job Type</th>
+                    <th>Hourly Rate</th>
+                    <th>Hours Worked</th>
+                    <th>Total Pay</th>
+                    <th>Phone</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="employeeTable"></tbody>
+        </table>
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+//Invoices page
+
+
+
+
+// ── page navigation ──────────────────────────────────
+function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(name).classList.add('active');
+    document.getElementById('btn-' + name).classList.add('active');
+}
+
+// ── customers ────────────────────────────────────────
+async function loadCustomers() {
+    const res  = await fetch('/api/customers');
+    const data = await res.json();
+    const tbody = document.getElementById('customerTable');
+    tbody.innerHTML = '';
+    data.forEach(c => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${c.id}</td>
+                <td>${c.name}</td>
+                <td>${c.phone}</td>
+                <td>${c.email}</td>
+                <td>${c.address}</td>
+                <td>
+                    <button class="btn-red" onclick="deleteCustomer(${c.id})">
+                        Delete
+                    </button>
+                </td>
+            </tr>`;
+    });
+}
+
+async function addCustomer() {
+    const name    = document.getElementById('c_name').value;
+    const phone   = document.getElementById('c_phone').value;
+    const email   = document.getElementById('c_email').value;
+    const address = document.getElementById('c_address').value;
+
+    if (!name || !phone) { alert('Name and phone are required'); return; }
+
+    await fetch('/api/customers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, email, address })
+    });
+
+    // clear form
+    document.getElementById('c_name').value    = '';
+    document.getElementById('c_phone').value   = '';
+    document.getElementById('c_email').value   = '';
+    document.getElementById('c_address').value = '';
+
+    // show success
+    const msg = document.getElementById('c_success');
+    msg.classList.remove('hidden');
+    setTimeout(() => msg.classList.add('hidden'), 2000);
+
+    loadCustomers();
+}
+
+async function deleteCustomer(id) {
+    await fetch('/api/customers/' + id, { method: 'DELETE' });
+    loadCustomers();
+}
+
+// ── profit calculator ────────────────────────────────
+async function calcProfit() {
+    const amountCharged = parseFloat(document.getElementById('p_charged').value) || 0;
+    const supplyCost    = parseFloat(document.getElementById('p_supply').value)  || 0;
+    const laborHours    = parseFloat(document.getElementById('p_hours').value)   || 0;
+    const laborRate     = parseFloat(document.getElementById('p_rate').value)    || 0;
+
+    if (!amountCharged) { alert('Please enter the amount charged'); return; }
+
+    const res  = await fetch('/api/profit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amountCharged, supplyCost, laborHours, laborRate })
+    });
+
+    const data = await res.json();
+
+    document.getElementById('r_charged').textContent = '$' + amountCharged.toFixed(2);
+    document.getElementById('r_supply').textContent  = '-$' + supplyCost.toFixed(2);
+    document.getElementById('r_labor').textContent   = '-$' + data.laborCost.toFixed(2);
+
+    const profitEl = document.getElementById('r_profit');
+    profitEl.textContent = '$' + data.profit.toFixed(2);
+    profitEl.className   = data.wasProfitable ? 'profit-good' : 'profit-bad';
+
+    document.getElementById('profitResult').style.display = 'block';
+
+    const status = document.getElementById('profitStatus');
+    status.style.display = 'block';
+    if (data.wasProfitable) {
+        status.textContent  = '✓ This job was profitable!';
+        status.className    = 'status-msg status-good';
+    } else {
+        status.textContent  = '✗ Warning: This job lost money!';
+        status.className    = 'status-msg status-bad';
+    }
+}
+
+// ── quotes ───────────────────────────────────────────
+let currentQuote = null;
+
+function generateQuote() {
+    const customerName  = document.getElementById('q_customer').value;
+    const customerPhone = document.getElementById('q_phone').value;
+    const serviceType   = document.getElementById('q_service').value;
+    const vehicleDesc   = document.getElementById('q_vehicle').value;
+    const supplyCost    = parseFloat(document.getElementById('q_supply').value) || 0;
+    const laborHours    = parseFloat(document.getElementById('q_hours').value)  || 0;
+    const laborRate     = parseFloat(document.getElementById('q_rate').value)   || 0;
+    const amountCharged = parseFloat(document.getElementById('q_price').value)  || 0;
+    const date          = document.getElementById('q_date').value;
+    const notes         = document.getElementById('q_notes').value;
+
+    if (!customerName || !amountCharged) {
+        alert('Customer name and quote price are required');
+        return;
+    }
+
+    const laborCost      = laborHours * laborRate;
+    const estimatedProfit = amountCharged - supplyCost - laborCost;
+
+    document.getElementById('qr_customer').textContent = customerName;
+    document.getElementById('qr_service').textContent  = serviceType;
+    document.getElementById('qr_vehicle').textContent  = vehicleDesc;
+    document.getElementById('qr_supply').textContent   = '$' + supplyCost.toFixed(2);
+    document.getElementById('qr_labor').textContent    = '$' + laborCost.toFixed(2);
+    document.getElementById('qr_price').textContent    = '$' + amountCharged.toFixed(2);
+
+    const profitEl = document.getElementById('qr_profit');
+    profitEl.textContent = '$' + estimatedProfit.toFixed(2);
+    profitEl.className   = estimatedProfit > 0 ? 'profit-good' : 'profit-bad';
+
+    document.getElementById('quotePreview').style.display = 'block';
+
+    // store for saving
+    currentQuote = { customerName, customerPhone, serviceType, vehicleDesc,
+                     supplyCost, laborHours, laborRate, amountCharged, date, notes };
+}
+
+async function saveQuote() {
+    if (!currentQuote) return;
+
+    const res  = await fetch('/api/quotes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(currentQuote)
+    });
+
+    const data = await res.json();
+    alert('Quote #' + data.id + ' saved!');
+
+    document.getElementById('quotePreview').style.display = 'none';
+    currentQuote = null;
+
+    loadQuotes();
+}
+
+async function loadQuotes() {
+    const res    = await fetch('/api/quotes');
+    const quotes = await res.json();
+    const tbody  = document.getElementById('quotesTable');
+    tbody.innerHTML = '';
+    quotes.forEach(q => {
+        tbody.innerHTML += `
+            <tr>
+                <td>#${q.id}</td>
+                <td>${q.customerName}</td>
+                <td>${q.serviceType}</td>
+                <td>${q.vehicleDesc}</td>
+                <td>$${q.amountCharged.toFixed(2)}</td>
+                <td class="${q.estimatedProfit > 0 ? 'profit-good' : 'profit-bad'}">
+                    $${q.estimatedProfit.toFixed(2)}
+                </td>
+            </tr>`;
+    });
+}
+
+// ── expenses ─────────────────────────────────────────
+async function loadExpenses() {
+    const res      = await fetch('/api/expenses');
+    const expenses = await res.json();
+
+    const tbody = document.getElementById('expenseTable');
+    tbody.innerHTML = '';
+
+    let total = 0;
+
+    // reset category totals
+    ['Supplies','Labor','Gas','Equipment','Other'].forEach(cat => {
+        document.getElementById('total_' + cat).textContent = '$0.00';
+    });
+
+    const categoryTotals = {};
+
+    expenses.forEach(e => {
+        total += e.amount;
+
+        // build table row
+        tbody.innerHTML += `
+            <tr>
+                <td>#${e.id}</td>
+                <td>${e.date}</td>
+                <td>${e.category}</td>
+                <td>${e.description}</td>
+                <td style="color:#e74c3c">$${e.amount.toFixed(2)}</td>
+            </tr>`;
+
+        // add to category total
+        if (!categoryTotals[e.category]) categoryTotals[e.category] = 0;
+        categoryTotals[e.category] += e.amount;
+    });
+
+    // update category totals on page
+    for (const [cat, total] of Object.entries(categoryTotals)) {
+        const el = document.getElementById('total_' + cat);
+        if (el) el.textContent = '$' + total.toFixed(2);
+    }
+
+    // update grand total
+    document.getElementById('expenseTotal').textContent = '$' + total.toFixed(2);
+}
+
+async function addExpense() {
+    const amount      = parseFloat(document.getElementById('e_amount').value) || 0;
+    const category    = document.getElementById('e_category').value;
+    const date        = document.getElementById('e_date').value;
+    const description = document.getElementById('e_desc').value;
+
+    if (!amount || !category || !date) {
+        alert('Amount, category and date are required');
+        return;
+    }
+
+    await fetch('/api/expenses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount, category, date, description })
+    });
+
+    // clear form
+    document.getElementById('e_amount').value   = '';
+    document.getElementById('e_category').value = '';
+    document.getElementById('e_date').value     = '';
+    document.getElementById('e_desc').value     = '';
+
+    // show success
+    const msg = document.getElementById('e_success');
+    msg.classList.remove('hidden');
+    setTimeout(() => msg.classList.add('hidden'), 2000);
+
+    loadExpenses();
+}
+
+// load expenses on start
+loadExpenses();
+
+// ── load on start ────────────────────────────────────
+loadCustomers();
+loadQuotes();
+
+// ── employees ────────────────────────────────────────
+
+async function loadEmployees() {
+    const res       = await fetch('/api/employees');
+    const employees = await res.json();
+
+    const tbody = document.getElementById('employeeTable');
+    tbody.innerHTML = '';
+
+    employees.forEach(e => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${e.id}</td>
+                <td>${e.name}</td>
+                <td>${e.jobType}</td>
+                <td>$${e.hourlyRate.toFixed(2)}/hr</td>
+                <td>${e.hoursWorked} hrs</td>
+                <td style="color:green">$${e.totalPay.toFixed(2)}</td>
+                <td>${e.phone}</td>
+                <td>
+                    <button class="btn-red" 
+                        onclick="deleteEmployee(${e.id})">
+                        Delete
+                    </button>
+                </td>
+            </tr>`;
+    });
+}
+
+async function addEmployee() {
+    const name    = document.getElementById('emp_name').value;
+    const jobType = document.getElementById('emp_jobType').value;
+    const rate    = parseFloat(document.getElementById('emp_rate').value) || 0;
+    const phone   = document.getElementById('emp_phone').value;
+    const email   = document.getElementById('emp_email').value;
+
+    if (!name || !jobType || !rate) {
+        alert('Name, job type and hourly rate are required');
+        return;
+    }
+
+    await fetch('/api/employees', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, jobType, hourlyRate: rate, phone, email })
+    });
+
+    // clear form
+    document.getElementById('emp_name').value    = '';
+    document.getElementById('emp_jobType').value = '';
+    document.getElementById('emp_rate').value    = '';
+    document.getElementById('emp_phone').value   = '';
+    document.getElementById('emp_email').value   = '';
+
+    // show success
+    const msg = document.getElementById('emp_success');
+    msg.classList.remove('hidden');
+    setTimeout(() => msg.classList.add('hidden'), 2000);
+
+    loadEmployees();
+}
+
+async function deleteEmployee(id) {
+    await fetch('/api/employees/' + id, { method: 'DELETE' });
+    loadEmployees();
+}
+
+async function addHours() {
+    const id    = parseInt(document.getElementById('emp_id').value);
+    const hours = parseFloat(document.getElementById('emp_hours').value) || 0;
+
+    if (!id || !hours) {
+        alert('Employee ID and hours are required');
+        return;
+    }
+
+    const res  = await fetch('/api/employees/hours/' + id, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ hours })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+        document.getElementById('emp_payResult').innerHTML = `
+            Hours added! Total hours: ${data.hoursWorked} 
+            → Total pay: <span style="color:green">
+            $${data.totalPay.toFixed(2)}</span>`;
+    }
+
+    // clear form
+    document.getElementById('emp_id').value    = '';
+    document.getElementById('emp_hours').value = '';
+
+    loadEmployees();
+}
+
+async function searchEmployee() {
+    const query = document.getElementById('emp_search').value;
+    if (!query) return;
+
+    const res  = await fetch('/api/employees/search/' + query);
+    const data = await res.json();
+
+    const resultDiv = document.getElementById('emp_searchResult');
+
+    if (data.found === false) {
+        resultDiv.innerHTML = '<p style="color:red">No employee found</p>';
+    } else {
+        resultDiv.innerHTML = `
+            <div class="card" style="margin-top:10px">
+                <p><strong>${data.name}</strong></p>
+                <p>Job Type:     ${data.jobType}</p>
+                <p>Hourly Rate:  $${data.hourlyRate.toFixed(2)}/hr</p>
+                <p>Hours Worked: ${data.hoursWorked} hrs</p>
+                <p>Total Pay:    
+                    <span style="color:green">
+                        $${data.totalPay.toFixed(2)}
+                    </span>
+                </p>
+                <p>Phone: ${data.phone}</p>
+            </div>`;
+    }
+}
+
+// load employees on start
+loadEmployees();
+
+// ── invoices ─────────────────────────────────────────
+async function loadInvoices() {
+    const res = await fetch('/api/invoices');
+    const data = await res.json();
+    const tbody = document.getElementById('invoiceTable');
+    tbody.innerHTML = '';
+
+    data.forEach(inv => {
+        tbody.innerHTML += `
+            <tr>
+                <td>#${inv.id}</td>
+                <td>${inv.customerName} (ID: ${inv.customerId})</td>
+                <td>${inv.date}</td>
+                <td style="font-weight:bold">$${inv.amount.toFixed(2)}</td>
+                <td>
+                    <span class="${inv.isPaid ? 'profit-good' : 'profit-bad'}" style="font-weight:bold">
+                        ${inv.isPaid ? 'PAID' : 'UNPAID'}
+                    </span>
+                </td>
+                <td>
+                    ${!inv.isPaid ? `<button class="btn-red" style="background:#2ecc71" onclick="payInvoice(${inv.id})">Mark Paid</button>` : '✓'}
+                </td>
+            </tr>`;
+    });
+}
+
+async function addInvoice() {
+    const customerId = parseInt(document.getElementById('i_customerId').value);
+    const customerName = document.getElementById('i_customerName').value;
+    const date = document.getElementById('i_date').value;
+    const amount = parseFloat(document.getElementById('i_amount').value);
+
+    if (!customerName || !amount || !date) { alert('Please fill in all fields'); return; }
+
+    await fetch('/api/invoices', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customerId, customerName, date, amount })
+    });
+
+    // Clear form
+    document.getElementById('i_customerId').value = '';
+    document.getElementById('i_customerName').value = '';
+    document.getElementById('i_date').value = '';
+    document.getElementById('i_amount').value = '';
+
+    const msg = document.getElementById('i_success');
+    msg.classList.remove('hidden');
+    setTimeout(() => msg.classList.add('hidden'), 2000);
+
+    loadInvoices();
+}
+
+async function payInvoice(id) {
+    await fetch(`/api/invoices/pay/${id}`, { method: 'PUT' });
+    loadInvoices();
+}
+
+// Update your start function to include invoices
+loadInvoices();
+
+</script>
+
+</body>
+</html>
