@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Manager - Appointments</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="appointment.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar section-content">
+            <a href="/index2.html" class="nav-logo">
+                <h2 class="logo-text">Business Manager</h2>
+            </a>
+            <ul class="nav-menu">
+                <button id="menu-close-button" class="fas fa-times"></button>
+
+                <li class="nav-item">
+                    <a href="/employees.html" class="nav-link">Employees</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/customers.html" class="nav-link">Customers</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/appointment.html" class="nav-link active">Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/invoices.html" class="nav-link">Invoices</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/quote.html" class="nav-link">Quotes</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/expense.html" class="nav-link">Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/profitCalculator.html" class="nav-link">Profit</a>
+                </li>
+            </ul>
+
+            <button id="menu-open-button" class="fas fa-bars"></button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="twoPanels-section">
+            <div class="panels-row">
+                <div class="panel" style="width: 100%; max-width: 800px; margin: 0 auto;">
+                    <div class="panel-title">Book Appointment</div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label>Customer ID</label>
+                            <input type="number" id="appointment-customer-id" placeholder="Customer ID" />
+                        </div>
+                        <div class="field">
+                            <label>Customer name</label>
+                            <input id="appointment-customer-name" placeholder="Customer name" />
+                        </div>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label>Date</label>
+                            <input type="date" id="appointment-date" value="2026-04-20" />
+                        </div>
+                        <div class="field">
+                            <label>Time</label>
+                            <input type="time" id="appointment-time" value="12:30" />
+                        </div>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label>Service type</label>
+                            <input id="appointment-service" placeholder="Service type" />
+                        </div>
+                        <div class="field">
+                            <label>Notes (optional)</label>
+                            <input id="appointment-notes" placeholder="Notes (optional)" />
+                        </div>
+                    </div>
+
+                    <button class="btn-main" onclick="bookAppointment()" style="width: auto; padding: 10px 20px;">Book Appointment</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="twoPanels-section" style="padding-top: 0;">
+            <div class="panels-row">
+                <div class="panel" style="width: 100%; max-width: 800px; margin: 0 auto;">
+                    <div class="panel-title">View by Date</div>
+                    <div class="search-row">
+                        <input type="date" id="view-date-inp" value="2026-04-20" />
+                        <button class="sbtn" onclick="viewSchedule()" style="background-color: #353535; color: white;">View Schedule</button>
+                        <button class="sbtn" onclick="showAll()" style="background-color: #353535; color: white;">Show All</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="allCustomers-section">
+            <div class="table-section" style="max-width: 800px; margin: 0 auto;">
+                <div class="table-header">
+                    <div class="table-title">All Appointments</div>
+                </div>
+                <div id="table-wrap">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                        <thead>
+                            <tr style="text-align: left; border-bottom: 1px solid #ddd; color: #666; font-size: 14px;">
+                                <th style="padding: 10px;">ID</th>
+                                <th style="padding: 10px;">Customer</th>
+                                <th style="padding: 10px;">Date</th>
+                                <th style="padding: 10px;">Time</th>
+                                <th style="padding: 10px;">Service</th>
+                                <th style="padding: 10px;">Notes</th>
+                                <th style="padding: 10px;">Status</th>
+                                <th style="padding: 10px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointment-list-body">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 20px; color: #999;">No appointments found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Next appointment card -->
+        <section class="stats-section">
+            <div class="panels-row">
+                <div class="panel">
+                    <div class="panel-title">Next appointment</div>
+                    <div id="next-appointment">
+                        <div class="empty">Loading...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">Queue order</div>
+                <div id="queue-list"></div>
+            </div>
+        </section>
+</main>
+
+    <script src="appointment.js"></script>
+</body>
+
+</html>

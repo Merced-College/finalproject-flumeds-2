@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Manager - Quotes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="quote.css">
+</head>
+<body>
+    <header>
+          <nav class="navbar section-content">
+            <a href="/index2.html" class="nav-logo">
+                <h2 class="logo-text">Business Manager</h2>
+            </a>
+            <ul class="nav-menu">
+                <button id="menu-close-button" class="fas fa-times"></button>
+                
+               <li class="nav-item">
+                    <a href="/employees.html" class="nav-link">Employees</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/customers.html" class="nav-link">Customers</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/appointment.html" class="nav-link">Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/invoices.html" class="nav-link">Invoices</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/quote.html" class="nav-link">Quotes</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/expense.html" class="nav-link">Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/profitCalculator.html" class="nav-link">Profit</a>
+                </li>
+            </ul>
+
+            <button id="menu-open-button" class="fas fa-bars"></button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="quote-form-section">
+            <div class="panel">
+                <div class="panel-title">Generate New Quote</div>
+                
+                <div class="field-row">
+                    <div class="field">
+                        <label>Customer Name</label>
+                        <input type="text" id="q-customerName" placeholder="e.g. Jane Doe">
+                    </div>
+                    <div class="field">
+                        <label>Customer Phone</label>
+                        <input type="text" id="q-customerPhone" placeholder="555-0123">
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label>Service Type</label>
+                        <input type="text" id="q-serviceType" placeholder="e.g. Engine Repair">
+                    </div>
+                    <div class="field">
+                        <label>Vehicle Description</label>
+                        <input type="text" id="q-vehicleDesc" placeholder="e.g. 2022 Toyota Camry">
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label>Labor Hours</label>
+                        <input type="number" id="q-laborHours" placeholder="1">
+                    </div>
+                    <div class="field">
+                        <label>Labor Rate ($/hr)</label>
+                        <input type="number" id="q-laborRate" placeholder="$85.00">
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label>Supply Cost ($)</label>
+                        <input type="number" id="q-supplyCost" placeholder="$0.00">
+                    </div>
+                    <div class="field">
+                        <label>Amount Charged to Customer ($)</label>
+                        <input type="number" id="q-amountCharged" placeholder="Total client price">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Notes</label>
+                    <input type="text" id="q-notes" placeholder="Additional details...">
+                </div>
+
+                <button class="btn-main" onclick="createQuote()">Create Quote</button>
+            </div>
+        </section>
+
+        <section class="table-section">
+            <div class="table-header">
+                <div class="table-title">Recent Quotes</div>
+            </div>
+            <div id="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer/Phone</th>
+                            <th>Service/Vehicle</th>
+                            <th>Supply Cost</th>
+                            <th>Labor Cost</th>
+                            <th>Total Quote</th>
+                            <th>Est. Profit</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="quote-list-body">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="quote.js"></script>
+</body>
+</html>

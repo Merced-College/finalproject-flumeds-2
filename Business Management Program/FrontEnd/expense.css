@@ -1,0 +1,460 @@
+/*Imported style font*/
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap');
+
+
+ * {
+  font-family: "Merriweather", serif;
+}
+/*
+*/
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+:root{
+    --white-color: #fff;
+    --primary-color: #4A6741;
+    --dark-color: #000000;
+    --secondary-color: #D4AF37;
+    --light-pink-color: #ffe9ec;
+    
+    --font-size-s: 0.9remn;
+    --font-size-n: 1rem;
+    --font-size-m: 1.12rem;
+    --font-size-l: 1.5rem;    
+    --font-size-xl: 2rem;
+    --font-size-xxl: 2.3rem;
+    
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semi-bold: 600;
+    --font-weight-bold: 700;   
+
+    --border-radius-s: 8px;
+    --border-radius-m: 30px;
+    --border-radius-circle: 50%;
+
+    --site-max-width: 1300px;
+}
+
+:root {
+
+}
+
+/* stylings for the whole site*/
+
+ul{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+img{
+    width: 100%;
+}
+
+
+.section-content {
+    margin: 0 auto;
+    padding: 0 20px;
+    max-width: var(--site-max-width);
+}
+/*Navbar Styling*/
+
+header {
+    position: fixed;
+    width: 100%;
+    z-index: 5;
+    background: var(--primary-color) ;
+}
+
+header .navbar {
+    display: flex;
+    padding: 30px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar .nav-logo .logo-text {
+    color: var(--white-color);
+    font-size: 25px;
+    font-weight: var(--font-semi-bold);
+}
+
+.navbar .nav-menu {
+    display: flex;
+    gap: 10px;
+}
+
+.navbar .nav-menu .nav-link {
+    padding: 10px 18px;
+    color: var(--white-color);
+    font-size: var(--font-size-m);
+    border-radius: var(--border-radius-m);
+    transition: 0.3s ease;
+} 
+
+.navbar .nav-menu .nav-link:hover {
+    color: var(--primary-color);
+    background: var(--secondary-color);
+
+}
+
+.navbar :where(#menu-close-button, #menu-open-button) {
+    display: none;
+}
+
+/* ── BODY & MAIN ─────────────────────────────────────── */
+body {
+    background: #1c1c1c;
+    color: #d0d0d0;
+    font-size: 14px;
+    min-height: 100vh;
+}
+
+ul { list-style: none; }
+
+main {
+    padding-top: 100px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 40px;
+    max-width: var(--site-max-width);
+    margin: 0 auto;
+}
+
+/* ── STATS ───────────────────────────────────────────── */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.stat-card {
+    background: #2a2a2a;
+    border-radius: 10px;
+    padding: 18px 20px;
+}
+
+.stat-card .label { font-size: 13px; color: #888; margin-bottom: 6px; }
+.stat-card .value { font-size: 26px; font-weight: 600; color: #e8e8e8; line-height: 1.1; }
+.stat-card .sub   { font-size: 12px; color: #666; margin-top: 4px; }
+.stat-card .red   { color: #e74c3c; }
+
+/* ── PANELS ──────────────────────────────────────────── */
+.panels-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.panel {
+    background: #2a2a2a;
+    border-radius: 10px;
+    padding: 22px;
+}
+
+.panel-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin-bottom: 16px;
+}
+
+/* ── FIELDS ──────────────────────────────────────────── */
+.field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+.field label { font-size: 12px; color: #888; }
+
+.field input,
+.field select {
+    background: #333;
+    border: 1px solid #404040;
+    border-radius: 7px;
+    padding: 9px 11px;
+    font-size: 13px;
+    color: #d0d0d0;
+    outline: none;
+    width: 100%;
+    font-family: inherit;
+}
+
+.field input::placeholder { color: #555; }
+.field input:focus,
+.field select:focus { border-color: #585858; }
+
+/* ── BUTTON ──────────────────────────────────────────── */
+.btn-main {
+    width: 100%;
+    margin-top: 14px;
+    padding: 11px;
+    background: #353535;
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    color: #d0d0d0;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.btn-main:hover { background: #404040; }
+
+.success-msg {
+    color: #3ecf8e;
+    font-size: 13px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.hidden { display: none; }
+
+/* ── CATEGORY BOXES ──────────────────────────────────── */
+.cat-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.cat-box {
+    border-radius: 8px;
+    padding: 12px 6px;
+    text-align: center;
+}
+
+.cat-label { font-size: 11px; margin-bottom: 4px; }
+.cat-value { font-size: 14px; font-weight: 600; }
+
+.cat-supplies  { background: #2d1515; color: #e74c3c; }
+.cat-labor     { background: #0d1f3d; color: #4f86c6; }
+.cat-gas       { background: #2d1f00; color: #d4a017; }
+.cat-equipment { background: #1a0d2d; color: #a05c7b; }
+.cat-other     { background: #1c1c1c; color: #888; border: 1px solid #333; }
+
+/* ── MONTH FILTER ────────────────────────────────────── */
+.filter-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.filter-row input[type="month"] {
+    flex: 1;
+    background: #333;
+    border: 1px solid #404040;
+    border-radius: 7px;
+    padding: 8px 11px;
+    font-size: 13px;
+    color: #d0d0d0;
+    outline: none;
+    font-family: inherit;
+}
+
+.filter-btn {
+    background: #333;
+    border: 1px solid #404040;
+    border-radius: 7px;
+    padding: 8px 14px;
+    color: #d0d0d0;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.filter-btn:hover { background: #3a3a3a; }
+
+/* ── TABLE ───────────────────────────────────────────── */
+.table-section {
+    background: #2a2a2a;
+    border-radius: 10px;
+    padding: 22px 22px 16px;
+}
+
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.table-title { font-size: 16px; font-weight: 600; color: #e0e0e0; }
+
+.table-controls select {
+    background: #333;
+    border: 1px solid #404040;
+    border-radius: 7px;
+    padding: 7px 12px;
+    color: #d0d0d0;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    cursor: pointer;
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+thead th {
+    font-size: 12px;
+    color: #666;
+    font-weight: 400;
+    text-align: left;
+    padding: 0 12px 12px;
+    border-bottom: 1px solid #333;
+}
+
+tbody td {
+    padding: 12px 12px;
+    border-bottom: 1px solid #333;
+    font-size: 13px;
+    color: #c8c8c8;
+    vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #2e2e2e; }
+
+/* ── BADGES ──────────────────────────────────────────── */
+.badge {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.b-supplies  { background: #2d1515; color: #e74c3c; }
+.b-labor     { background: #0d1f3d; color: #4f86c6; }
+.b-gas       { background: #2d1f00; color: #d4a017; }
+.b-equipment { background: #1a0d2d; color: #a05c7b; }
+.b-other     { background: #1c1c1c; color: #888; border: 1px solid #333; }
+
+/* ── AMOUNT & TOTAL ──────────────────────────────────── */
+.amount-col { color: #e74c3c; font-weight: 500; }
+.red        { color: #e74c3c; }
+
+.grand-total {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding-top: 14px;
+    margin-top: 6px;
+    border-top: 1px solid #333;
+    font-size: 14px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+/* ── REMOVE BUTTON ───────────────────────────────────── */
+.remove-btn {
+    background: #333;
+    border: 1px solid #404040;
+    border-radius: 7px;
+    padding: 5px 12px;
+    color: #999;
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.remove-btn:hover { border-color: #c0392b; color: #e74c3c; background: #2a1515; }
+
+.empty { color: #555; font-size: 13px; padding: 30px; text-align: center; }
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media screen and (max-width: 900px) {
+    .stats-row  { grid-template-columns: repeat(2, 1fr); }
+    .panels-row { grid-template-columns: 1fr; }
+    .field-row  { grid-template-columns: 1fr; }
+    .cat-grid   { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media screen and (max-width: 480px) {
+    .stats-row { grid-template-columns: 1fr; }
+    .cat-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Responsive Media for max width 900px */
+@media screen and (max-width: 900px) {
+    :root {
+        --font-size-m: 1rem;
+        --font-size-l: 1.3rem;
+        --font-size-xl: 1.5rem;
+        --font-size-xxl: 1.8rem;        
+    }
+
+    body.show-mobile-menu header::before {
+        content: "";
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        backdrop-filter: blur(5px);
+        background: rgba(0, 0, 0, 0.2);
+        
+    }
+
+    .navbar :where(#menu-close-button, #menu-open-button){
+        font-size: var(--font-size-l);
+        display: block;
+    }
+    
+    
+    .navbar #menu-close-button {
+        position: absolute;
+        right: 30px;
+        top: 30px;
+    }
+
+    .navbar #menu-open-button {
+        color: var(--white-color);
+    }
+
+    
+    .navbar .nav-menu {
+        display: block;
+        position: fixed;
+        left: -300px;
+        top: 0;
+        width: 300px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 100px;
+        background: var(--white-color);
+        transition: left 0.2s ease;
+    }
+
+    body.show-mobile-menu .navbar .nav-menu {
+    left: 0;
+    }
+.navbar .nav-menu .nav-link {
+    color: var(--dark-color);
+    display: block;
+    margin-top: 17px;
+    font-size: 20px;
+}
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Manager - Profit Calc</title>
+    <link rel = "stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="profitCalculator.css">
+</head>
+<body>
+    <header>
+         <nav class="navbar section-content">
+            <a href="/index2.html" class="nav-logo">
+                <h2 class="logo-text">Business Manager</h2>
+            </a>
+            <ul class="nav-menu">
+                <button id="menu-close-button" class="fas fa-times"></button>
+                
+               <li class="nav-item">
+                    <a href="/employees.html" class="nav-link">Employees</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/customers.html" class="nav-link">Customers</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/appointment.html" class="nav-link">Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/invoices.html" class="nav-link">Invoices</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/quote.html" class="nav-link">Quotes</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/expense.html" class="nav-link">Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/profitCalculator.html" class="nav-link">Profit</a>
+                </li>
+            </ul>
+
+            <button id="menu-open-button" class="fas fa-bars"></button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="panel-container">
+        <div class="panel">
+            <div class="panel-title">Job Profitability Calculator</div>
+            <div class="field-row">
+                <div class="field">
+                    <label>Amount Charged ($)</label>
+                    <input type="number" id="p-charged" placeholder="e.g. 500" step="0.01">
+                </div>
+                <div class="field">
+                    <label>Supply Cost ($)</label>
+                    <input type="number" id="p-supplies" placeholder="e.g. 150" step="0.01">
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label>Labor Rate ($/hr)</label>
+                    <input type="number" id="p-rate" placeholder="e.g. 50" step="0.01">
+                </div>
+                <div class="field">
+                    <label>Labor Hours</label>
+                    <input type="number" id="p-hours" placeholder="e.g. 4" step="0.1">
+                </div>
+            </div>
+            <button class="btn-calculate" onclick="calculateProfit()">Calculate Results</button>
+        </div>
+
+        <div id="results-panel" class="panel hidden">
+            <div class="panel-title">Financial Breakdown</div>
+            <div class="breakdown">
+                <div class="res-item"><span>Total Revenue:</span><span id="res-charged" class="val-pos">$0.00</span></div>
+                <div class="res-item"><span>Supply Costs:</span><span id="res-supplies" class="val-neg">-$0.00</span></div>
+                <div class="res-item"><span>Labor Costs:</span><span id="res-labor" class="val-neg">-$0.00</span></div>
+                <hr>
+                <div class="res-item total"><span>Net Profit:</span><span id="res-profit">$0.00</span></div>
+            </div>
+            <div id="profit-badge" class="status-message"></div>
+        </div>
+    </div>
+    </main>
+
+    <script src="profitCalculator.js"></script>
+</body>
+</html>

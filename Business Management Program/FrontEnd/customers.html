@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Manager</title>
+    <!-- Linking Font Awesome for icons -->
+    <link rel = "stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="customers.css">
+
+</head>
+
+<body>
+    <!-- Header / Navbar  -->
+    <header>
+        <nav class="navbar section-content">
+            <a href="/index2.html" class="nav-logo">
+                <h2 class="logo-text">Business Manager</h2>
+            </a>
+            <ul class="nav-menu">
+                <button id="menu-close-button" class="fas fa-times"></button>
+                
+               <li class="nav-item">
+                    <a href="/employees.html" class="nav-link">Employees</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/customers.html" class="nav-link">Customers</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/appointment.html" class="nav-link">Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/invoices.html" class="nav-link">Invoices</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/quote.html" class="nav-link">Quotes</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/expense.html" class="nav-link">Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/profitCalculator.html" class="nav-link">Profit</a>
+                </li>
+            </ul>
+
+            <button id="menu-open-button" class="fas fa-bars"></button>
+        </nav>
+    </header>
+
+    <main>
+          <!-- STATS -->
+  <section class="stats-section">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="label">Total customers</div>
+        <div class="value" id="s-total">—</div>
+        <div class="sub">in database</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Most recent</div>
+        <div class="value" id="s-recent" style="font-size:16px;padding-top:6px;">—</div>
+        <div class="sub">last added</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Search results</div>
+        <div class="value" id="s-results">—</div>
+        <div class="sub">matching query</div>
+      </div>
+    </div>
+  </section>
+
+        <!-- TWO PANELS -->
+        <section class="twoPanels-section">
+            <div class="panels-row">
+    
+                <!-- Add customer -->
+                <div class="panel">
+                    <div class="panel-title">Add customer</div>
+            
+                    <div class="field-row">
+                    <div class="field">
+                        <label>Full name</label>
+                        <input id="inp-name" placeholder="e.g. John Smith"/>
+                    </div>
+                    <div class="field">
+                        <label>Phone</label>
+                        <input id="inp-phone" placeholder="559-555-0100"/>
+                    </div>
+                    </div>
+    
+                    <div class="field-row">
+                        <div class="field">
+                        <label>Email</label>
+                    <input id="inp-email" type="email" placeholder="customer@email.com"/>
+                    </div>
+                    <div class="field">
+                    <label>Address</label>
+                    <input id="inp-address" placeholder="123 Main St"/>
+                </div>
+            </div>
+            <button class="btn-main" onclick="addCustomer()">Add customer</button>
+        </div>
+    
+            <!-- Search -->
+            <div class="panel">
+                <div class="panel-title">Search customer</div>
+        
+                <div class="search-row">
+                <input id="search-inp" placeholder="Search by name or phone..."
+                        onkeydown="if(event.key==='Enter')doSearch()"/>
+                <button class="sbtn" onclick="doSearch()">Search</button>
+                </div>
+                <div id="search-results"></div>
+            </div>
+    
+            </div>
+        </section>
+ 
+        <!-- ALL CUSTOMERS TABLE -->
+        <section class="allCustomers-section">
+            <div class="table-section">
+            <div class="table-header">
+                <div class="table-title">All customers</div>
+                <div class="table-controls">
+                <button onclick="sortByName()">Sort by name</button>
+                <button onclick="sortById()">Sort by ID</button>
+                </div>
+            </div>
+            <div id="table-wrap"><div class="empty">Loading…</div></div>
+            </div>
+        </section>
+<script src="customers.js"></script>
+    </main>   
+<script src = "customers.js"></script>    
+</body>
+</html>
+
+
+
+
